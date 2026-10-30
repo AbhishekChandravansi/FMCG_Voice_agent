@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: fmcg_voice_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fmcg_voice
+      POSTGRES_USER: fmcg_user
+      POSTGRES_PASSWORD: fmcg_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - fmcg_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fmcg_user -d fmcg_voice"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  fmcg_pgdata:
